@@ -39,7 +39,7 @@ dependencies = [
     "pandas",
     "scipy",
     "scikit-learn",
-    "faiss-cpu>=1.7.4",
+    "faiss-cpu>=1.7.4", # to be compatible with fast llm image
     
     # ML Experiment Tracking & Visualization
     "wandb",
