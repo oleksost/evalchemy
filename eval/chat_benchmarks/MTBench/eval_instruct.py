@@ -50,12 +50,19 @@ class MTBenchConfig:
     max_gpu_memory: Optional[str] = None
     dtype: Optional[str] = None
     revision: str = "main"
-    judge_file: str = "eval/chat_benchmarks/MTBench/fastchat/llm_judge/data/judge_prompts.jsonl"
+    judge_file: str = None
     judge_model: str = "gpt-4o-mini-2024-07-18"
     baseline_model: str = "gpt-3.5-turbo"
     mode: str = "single"
     parallel: int = 4
     first_n: Optional[int] = None
+
+    def __post_init__(self):
+        """Set default judge_file path relative to the MTBench directory."""
+        if self.judge_file is None:
+            # Get the directory containing the MTBench eval_instruct.py file
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            self.judge_file = os.path.join(current_dir, "fastchat", "llm_judge", "data", "judge_prompts.jsonl")
 
 
 class MTBenchBenchmark(BaseBenchmark):
@@ -67,7 +74,7 @@ class MTBenchBenchmark(BaseBenchmark):
 
     def __init__(
         self,
-        base_path: str = "eval/chat_benchmarks/MTBench",
+        base_path: str = None,
         config: Optional[MTBenchConfig] = None,
         debug: bool = False,
         annotator_model: str = "gpt-4o-mini-2024-07-18",
@@ -86,6 +93,11 @@ class MTBenchBenchmark(BaseBenchmark):
             system_instruction: Optional system instruction for the model
         """
         super().__init__(logger=logger, system_instruction=system_instruction)
+        
+        # Set default base path relative to this file's location
+        if base_path is None:
+            base_path = os.path.dirname(os.path.abspath(__file__))
+        
         self.base_path = Path(base_path)
         if annotator_model == "auto":
             annotator_model = "gpt-4"

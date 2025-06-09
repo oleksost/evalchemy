@@ -45,7 +45,7 @@ class MixEvalBenchmark(BaseBenchmark):
         version: str = "2024-06-01",
         batch_size: int = 8,
         max_gpu_memory: str = "60GB",
-        data_path: str = "eval/chat_benchmarks/MixEval/mix_eval/data/",
+        data_path: str = None,
         api_parallel_num: int = 32,
         annotator_model: str = "gpt-4o-mini-2024-07-18",
         verbose: bool = False,
@@ -71,6 +71,12 @@ class MixEvalBenchmark(BaseBenchmark):
             system_instruction: Optional system instruction for the model
         """
         super().__init__(logger=logger, system_instruction=system_instruction)
+        
+        # Set default data path relative to this file's location
+        if data_path is None:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            data_path = os.path.join(current_dir, "mix_eval", "data")
+        
         os.makedirs(output_dir, exist_ok=True)
         if annotator_model == "auto":
             annotator_model = "gpt-3.5-turbo-0125"

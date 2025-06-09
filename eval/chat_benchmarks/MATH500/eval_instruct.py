@@ -1,7 +1,7 @@
 import json
 import logging
 from typing import Any, Dict, List, Optional
-
+import os
 import lm_eval.models
 from lm_eval.api.instance import Instance
 from lm_eval.api.model import LM
@@ -24,7 +24,7 @@ class MATH500Benchmark(BaseBenchmark):
 
     def __init__(
         self,
-        data_file: str = "eval/chat_benchmarks/MATH500/data/math500.jsonl",
+        data_file: str = None,
         debug: bool = False,
         seed: List[int] = [0, 1234, 1234, 1234],
         max_tokens: int = 32768,
@@ -42,6 +42,12 @@ class MATH500Benchmark(BaseBenchmark):
             system_instruction: Optional system instruction for the model
         """
         super().__init__(logger=logger, system_instruction=system_instruction)
+        
+        # Set default data file path relative to this file's location
+        if data_file is None:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            data_file = os.path.join(current_dir, "data", "math500.jsonl")
+        
         self.data_file = data_file
         self.debug = debug
         self.seed = seed
@@ -143,6 +149,7 @@ class MATH500Benchmark(BaseBenchmark):
             output (str): Model-generated solution text
 
         Returns:
+        
             str: Extracted final answer. Returns empty string if no answer found in \boxed.
         """
         try:

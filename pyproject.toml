@@ -39,7 +39,7 @@ dependencies = [
     "pandas",
     "scipy",
     "scikit-learn",
-    "faiss-cpu==1.7.4",
+    "faiss-cpu>=1.7.4",
     
     # ML Experiment Tracking & Visualization
     "wandb",

@@ -3,6 +3,7 @@ import logging
 import numpy as np
 import re
 from typing import Any, Dict, List, Optional
+import os
 
 from lm_eval.api.instance import Instance
 from lm_eval.api.model import LM
@@ -20,7 +21,7 @@ class AIWBenchmark(BaseBenchmark):
 
     def __init__(
         self,
-        data_file: str = "eval/chat_benchmarks/AIW/data/aiw_data.json",
+        data_file: str = None,
         debug: bool = False,
         seed: List[int] = [0, 1234, 1234, 1234],
         max_tokens: int = 32768,
@@ -39,6 +40,12 @@ class AIWBenchmark(BaseBenchmark):
             system_instruction: Optional system instruction for the model
         """
         super().__init__(logger=logger, system_instruction=system_instruction)
+        
+        # Set default data file path relative to this file's location
+        if data_file is None:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            data_file = os.path.join(current_dir, "data", "aiw_data.json")
+        
         self.data_file = data_file
         self.debug = debug
         self.max_new_tokens = max_tokens

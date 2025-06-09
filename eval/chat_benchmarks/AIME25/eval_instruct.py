@@ -1,6 +1,7 @@
 import json
 import logging
 from typing import Any, Dict, List, Optional
+import os
 
 import numpy as np
 from lm_eval.api.instance import Instance
@@ -24,7 +25,7 @@ class AIME25Benchmark(BaseBenchmark):
 
     def __init__(
         self,
-        data_file: str = "eval/chat_benchmarks/AIME25/data/aime25.json",
+        data_file: str = None,
         debug: bool = False,
         seed: List[int] = [0, 1234, 1234, 1234],
         max_tokens: int = 32768,
@@ -41,6 +42,12 @@ class AIME25Benchmark(BaseBenchmark):
             logger: Optional logger instance
         """
         super().__init__(logger=logger, system_instruction=system_instruction)
+        
+        # Set default data file path relative to this file's location
+        if data_file is None:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            data_file = os.path.join(current_dir, "data", "aime25.json")
+        
         self.data_file = data_file
         self.debug = debug
         self.max_new_tokens = max_tokens
