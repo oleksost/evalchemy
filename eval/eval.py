@@ -506,7 +506,21 @@ def initialize_model(
     else:
         lm = model
 
-    lm.model_identifier = sanitize_model_name(f"model_{model}_model_args_{model_args}")
+    # Create model identifier, falling back to simpler name if too long
+    if isinstance(model, str):
+        # Try with full model_args first
+        full_identifier = sanitize_model_name(f"model_{model}_model_args_{model_args}")
+        
+        # Check if the identifier is too long for filesystem (255 char limit for most filesystems)
+        if len(full_identifier) > 245:  # Use 245 as safe limit: 255 - 6 (.jsonl) - 4 (buffer)
+            # Fall back to just the model name without model_args
+            lm.model_identifier = sanitize_model_name(f"model_{model}")
+        else:
+            lm.model_identifier = full_identifier
+    else:
+        # For already instantiated models
+        lm.model_identifier = sanitize_model_name(f"model_{type(lm).__name__}")
+    
     return lm
 
 
