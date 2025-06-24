@@ -13,7 +13,7 @@ from .evaluation import evaluate_accuracy
 class IFEvalBenchmark(BaseBenchmark):
     def __init__(
         self,
-        data_dir: str = "eval/chat_benchmarks/IFEval/data",
+        data_dir: str = None, #"eval/chat_benchmarks/IFEval/data",
         num_examples: int = 3,
         start_idx: int = 10,
         end_idx: int = 510,
@@ -36,6 +36,11 @@ class IFEvalBenchmark(BaseBenchmark):
         system_instruction: Optional system instruction for the model
         """
         super().__init__(logger=logger, system_instruction=system_instruction)
+
+        if data_dir is None:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            data_dir = os.path.join(current_dir, "data",)
+
         self.data_dir = data_dir
         self.max_tokens = max_tokens
         self.num_examples = num_examples
