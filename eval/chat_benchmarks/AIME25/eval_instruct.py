@@ -52,8 +52,10 @@ class AIME25Benchmark(BaseBenchmark):
         self.debug = debug
         self.max_new_tokens = max_tokens
         self.seed = seed
-        self.n_repeat = os.environ.get("N_REPEAT", 10)
+        self.n_repeat = int(os.environ.get("N_REPEAT", 10))
         self.n_examples_subset = os.environ.get("N_EXAMPLES_SUBSET", None)
+        if self.n_examples_subset is not None:
+            self.n_examples_subset = int(self.n_examples_subset)
         self.logger.info(f"N_EXAMPLES_SUBSET: {self.n_examples_subset}")
         self.logger.info(f"N_REPEAT: {self.n_repeat}")
 
