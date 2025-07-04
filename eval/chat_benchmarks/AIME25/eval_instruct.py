@@ -52,7 +52,10 @@ class AIME25Benchmark(BaseBenchmark):
         self.debug = debug
         self.max_new_tokens = max_tokens
         self.seed = seed
-        self.n_repeat = 10
+        self.n_repeat = os.environ.get("N_REPEAT", 10)
+        self.n_examples_subset = os.environ.get("N_EXAMPLES_SUBSET", None)
+        self.logger.info(f"N_EXAMPLES_SUBSET: {self.n_examples_subset}")
+        self.logger.info(f"N_REPEAT: {self.n_repeat}")
 
     def generate_responses(self, model: LM) -> Dict[str, Any]:
         """
@@ -165,6 +168,8 @@ class AIME25Benchmark(BaseBenchmark):
         """Load AIME25 questions from the data file."""
         with open(self.data_file, "r") as f:
             questions = [json.loads(x) for x in f]
+        if self.n_examples_subset is not None:
+            questions = questions[:self.n_examples_subset]
         self.logger.info(f"Loaded {len(questions)} questions from {self.data_file}")
         return questions
 

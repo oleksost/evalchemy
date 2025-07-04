@@ -52,6 +52,8 @@ class MATH500Benchmark(BaseBenchmark):
         self.debug = debug
         self.seed = seed
         self.max_new_tokens = max_tokens
+        self.n_examples_subset = os.environ.get("N_EXAMPLES_SUBSET", None)
+        self.logger.info(f"N_EXAMPLES_SUBSET: {self.n_examples_subset}")
 
     def generate_responses(self, model: LM) -> Dict[str, Any]:
         """
@@ -137,6 +139,8 @@ class MATH500Benchmark(BaseBenchmark):
         """Load MATH500 questions from the data file."""
         with open(self.data_file, "r") as f:
             questions = [json.loads(x) for x in f]
+        if self.n_examples_subset is not None:
+            questions = questions[:self.n_examples_subset]
         self.logger.info(f"Loaded {len(questions)} questions from {self.data_file}")
         return questions
 
