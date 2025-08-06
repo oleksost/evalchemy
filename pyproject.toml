@@ -93,7 +93,7 @@ dependencies = [
     "tree-sitter-java",
     "tree_sitter",
     "asttokens",
-    "mypy_extensions"
+    "mypy_extensions",
     
     # Web & API
     "fastapi>=0.101.0",
