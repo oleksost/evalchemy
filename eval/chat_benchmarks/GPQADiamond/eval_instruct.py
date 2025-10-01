@@ -70,12 +70,12 @@ class GPQADiamondBenchmark(BaseBenchmark):
             example["multiple_choice_string"] = multiple_choice_string
             example["answer"] = correct_answer
 
-        if isinstance(model, lm_eval.models.huggingface.HFLM):
-            model_name = model.pretrained
-        elif isinstance(model, lm_eval.models.openai_completions.OpenAIChatCompletion):
-            model_name = str(f"openai/{model.model}")
-        else:
-            model_name = model.model_args["model"]
+        # if isinstance(model, lm_eval.models.huggingface.HFLM):
+        #     model_name = model.pretrained
+        # elif isinstance(model, lm_eval.models.openai_completions.OpenAIChatCompletion):
+        #     model_name = str(f"openai/{model.model}")
+        # else:
+        #     model_name = model.model_args["model"]
 
         all_outputs = []
 
