@@ -92,9 +92,9 @@ class MATH500Benchmark(BaseBenchmark):
                     (
                         templated_messages,
                         {
-                            "do_sample": False,
+                            "do_sample": os.environ.get("DO_SAMPLE", False),
                             "max_new_tokens": self.max_new_tokens,
-                            "temperature": 0.7,
+                            "temperature": os.environ.get("GEN_TEMPERATURE", 0.7),
                             "seed": self.seed,
                         },
                     ),

@@ -101,8 +101,8 @@ class GPQADiamondBenchmark(BaseBenchmark):
                     (
                         templated_messages,
                         {
-                            "do_sample": True,
-                            "temperature": 0.7,
+                            "do_sample": os.environ.get("DO_SAMPLE", True),
+                            "temperature": os.environ.get("GEN_TEMPERATURE", 0.7),
                             "max_new_tokens": self.max_new_tokens,
                             "seed": seed,
                         },
