@@ -52,7 +52,7 @@ class GPQADiamondBenchmark(BaseBenchmark):
         self.debug = debug
         self.seed = seed
         self.max_new_tokens = max_tokens
-        self.n_repeat = int(os.environ.get("N_REPEAT_GPQA", 3))
+        self.n_repeat = int(os.environ.get("N_REPEAT", 3))
 
     def generate_responses(self, model: LM) -> Dict[str, Any]:
         """
